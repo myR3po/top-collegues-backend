@@ -42,7 +42,7 @@ public class CollegueController {
 	public List<Collegue> ajouterCollegue(@RequestBody Collegue collegue) throws CollegueException  {
 
 		if(collegue.getPseudo() == null || collegue.getPseudo().trim().isEmpty()) {
-			throw new CollegueBadPseudoException("");
+			throw new CollegueBadPseudoException("The pseudo is incorrect");
 		}
 		
 		collegue.setPseudo(collegue.getPseudo().trim().toLowerCase());
@@ -50,7 +50,7 @@ public class CollegueController {
 		Optional<Collegue> optional = collegueRepository.findByPseudo(collegue.getPseudo());
 		
 		if(optional.isPresent()) {
-			throw new CollegueAlreadyExistsException("");
+			throw new CollegueAlreadyExistsException("The pseudo "+ collegue.getPseudo() +" is already taken");
 		}
 		
 		collegueRepository.save(collegue);
@@ -62,12 +62,12 @@ public class CollegueController {
 	public Collegue mettreScoreCollegueAjour(@RequestBody Opinion opinion, @PathVariable("pseudo") String pseudo) throws CollegueException   {
 		
 		if(pseudo == null || pseudo.trim().isEmpty()) {
-			throw new CollegueBadPseudoException("");
+			throw new CollegueBadPseudoException("The pseudo is incorrect");
 		}
 		
 		Optional<Collegue> optional =  collegueRepository.findByPseudo(pseudo.trim());
 		
-		Collegue collegue = optional.orElseThrow(() ->  new CollegueNotFoundException());
+		Collegue collegue = optional.orElseThrow(() ->  new CollegueNotFoundException("Could not found the collegue with the pseudo " + pseudo));
 
 		if(opinion.getAction().equalsIgnoreCase("aimer")) {
 			collegue.setScore(collegue.getScore() + 10);
