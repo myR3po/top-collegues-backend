@@ -7,19 +7,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.topcollegues.api.entite.Collegue;
-import dev.topcollegues.api.entite.Opinion;
 import dev.topcollegues.api.exception.CollegueAlreadyExistsException;
 import dev.topcollegues.api.exception.CollegueBadPseudoException;
 import dev.topcollegues.api.exception.CollegueException;
-import dev.topcollegues.api.exception.CollegueNotFoundException;
 import dev.topcollegues.api.repository.CollegueRepository;
 
 @RestController
@@ -33,7 +29,6 @@ public class CollegueController {
 	
 	@GetMapping
 	public List<Collegue> listerCollegue() {
-
 		return collegueRepository.findAll();
 	}
 	
@@ -56,29 +51,6 @@ public class CollegueController {
 		collegueRepository.save(collegue);
 	
 		return collegueRepository.findAll();
-	}
-	
-	@PatchMapping(path = "/{pseudo}")
-	public Collegue mettreScoreCollegueAjour(@RequestBody Opinion opinion, @PathVariable("pseudo") String pseudo) throws CollegueException   {
-		
-		if(pseudo == null || pseudo.trim().isEmpty()) {
-			throw new CollegueBadPseudoException("The pseudo is incorrect");
-		}
-		
-		Optional<Collegue> optional =  collegueRepository.findByPseudo(pseudo.trim());
-		
-		Collegue collegue = optional.orElseThrow(() ->  new CollegueNotFoundException("Could not found the collegue with the pseudo " + pseudo));
-
-		if(opinion.getAction().equalsIgnoreCase("aimer")) {
-			collegue.setScore(collegue.getScore() + 10);
-		}else {
-			collegue.setScore(collegue.getScore() - 5);
-		}
-		
-		collegueRepository.save(collegue);
-
-
-		return collegue;
 	}
 	
 }

@@ -15,6 +15,6 @@ public class AliveController {
 	@GetMapping
 	public ResponseEntity<String> isAlive() {
 		
-		return new ResponseEntity<String>("Hello World", HttpStatus.OK);
+		return new ResponseEntity<String>("", HttpStatus.OK);
 	}
 }

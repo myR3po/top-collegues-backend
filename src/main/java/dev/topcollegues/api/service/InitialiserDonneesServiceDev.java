@@ -30,15 +30,13 @@ public class InitialiserDonneesServiceDev implements InitialiserDonneesService {
 	@Transactional
 	public void initialiser() {
 		final String url = "https://avatars0.githubusercontent.com/u/18171845?s=400&v=4";
-		
-		
+
 		Stream.of("jean", "pierre", "christophe", "caroline", "michelle").forEach(name -> {
 			Collegue c = new Collegue();
 		    c.setPseudo(name);
 		    c.setUrl(url);
-		    c.setScore(50);
+		    c.setScore(0);
 		    em.persist(c);
-			
 		});
 			    
 	}
