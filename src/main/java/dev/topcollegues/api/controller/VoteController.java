@@ -30,17 +30,13 @@ public class VoteController {
 
   @GetMapping
   public List<Vote> listerCollegue(@RequestParam(value = "since", required = false) Integer voteId) {
-    
-	List<Vote> votes = null;
-	
+    	
     if(voteId != null) {
-    	votes = voteRepository.findByIdGreaterThanOrderByIdDesc(voteId);
+    	return voteRepository.findByIdGreaterThanOrderByIdDesc(voteId);
     }
     
-    if(votes == null || votes.isEmpty()) {
-    	votes =  voteRepository.findFirst3ByOrderByIdDesc();
-    }
-    return votes;
+   	return voteRepository.findFirst3ByOrderByIdDesc();
+
   }
 
   @PatchMapping
@@ -82,7 +78,7 @@ public class VoteController {
   }
   
   @SendTo("/votes/last")
-  private List<Vote> lastVote(@RequestParam(value = "since", required = false) Integer voteId){
-	  return voteRepository.findByIdGreaterThanOrderByIdDesc(voteId);
+  private String lastVote(){
+	  return "good";
   }
 }
